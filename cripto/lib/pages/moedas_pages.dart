@@ -61,33 +61,44 @@ class _MoedasPageState extends State<MoedasPage> {
         body: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12))),
-              leading: (selecionadas.contains(tabela[index]))
-                  ? CircleAvatar(child: Icon(Icons.check))
-                  : SizedBox(
-                      child: Image.asset(tabela[index].icone),
-                      width: 40,
-                    ),
-              title: Text(
-                tabela[index].nome,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                leading: (selecionadas.contains(tabela[index]))
+                    ? CircleAvatar(child: Icon(Icons.check))
+                    : SizedBox(
+                        child: Image.asset(tabela[index].icone),
+                        width: 40,
+                      ),
+                title: Text(
+                  tabela[index].nome,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              trailing: Text(real.format(tabela[index].preco)),
-              selected: selecionadas.contains(tabela[index]),
-              selectedTileColor: Colors.indigo[50],
-              onLongPress: () {
-                setState(() {
-                  (selecionadas.contains(tabela[index]))
-                      ? selecionadas.remove(tabela[index])
-                      : selecionadas.add(tabela[index]);
+                trailing: Text(real.format(tabela[index].preco)),
+                selected: selecionadas.contains(tabela[index]),
+                selectedTileColor: Colors.indigo[50],
+                onLongPress: () {
+                  (selecionadas.isEmpty)
+                      ? setState(() {
+                          (selecionadas.contains(tabela[index]))
+                              ? selecionadas.remove(tabela[index])
+                              : selecionadas.add(tabela[index]);
+                        })
+                      : null;
+                },
+                onTap: () {
+                  (selecionadas.isEmpty)
+                      ? moedaDetalhes(tabela[index])
+                      : setState(
+                          () {
+                            (selecionadas.contains(tabela[index]))
+                                ? selecionadas.remove(tabela[index])
+                                : selecionadas.add(tabela[index]);
+                          },
+                        );
                 });
-              },
-              onTap: () => moedaDetalhes(tabela[index]),
-            );
           },
           padding: EdgeInsets.all(16),
           separatorBuilder: (_, __) => Divider(),
