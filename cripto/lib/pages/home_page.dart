@@ -1,14 +1,15 @@
-import 'package:cripto/pages/favoritas_page.dart';
-import 'package:cripto/pages/moedas_pages.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
+import 'favoritas_page.dart';
+import 'moedas_pages.dart';
+
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -21,9 +22,9 @@ class _HomePageState extends State<HomePage> {
     pc = PageController(initialPage: paginaAtual);
   }
 
-  setPagAtual(pag) {
+  setPaginaAtual(pagina) {
     setState(() {
-      paginaAtual = pag;
+      paginaAtual = pagina;
     });
   }
 
@@ -36,19 +37,22 @@ class _HomePageState extends State<HomePage> {
           MoedasPage(),
           FavoritasPage(),
         ],
-        onPageChanged: setPagAtual,
+        onPageChanged: setPaginaAtual,
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: paginaAtual,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: 'Favoritas')
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritas'),
         ],
-        onTap: (value) {
-          pc.animateToPage(value,
-              duration: Duration(milliseconds: 400), curve: Curves.ease);
+        onTap: (pagina) {
+          pc.animateToPage(
+            pagina,
+            duration: Duration(milliseconds: 400),
+            curve: Curves.ease,
+          );
         },
+        // backgroundColor: Colors.grey[100],
       ),
     );
   }

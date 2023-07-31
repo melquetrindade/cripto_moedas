@@ -1,7 +1,7 @@
 import '../models/moeda.dart';
 
 class MoedaRepository {
-  List<Moeda> tabela = [
+  static List<Moeda> tabela = [
     Moeda(
         icone: 'images/bitcoin.png',
         nome: 'Bitcoin',
