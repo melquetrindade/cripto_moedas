@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../configs/app_settings.dart';
 import '../models/moeda.dart';
 
 class MoedaDetalhes extends StatefulWidget {
@@ -15,10 +17,16 @@ class MoedaDetalhes extends StatefulWidget {
 }
 
 class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  late NumberFormat real;
+  late Map<String, String> loc;
   final _form = GlobalKey<FormState>();
   final _valor = TextEditingController();
   double quantidade = 0;
+
+  readNumberFormat() {
+    loc = context.watch<AppSettings>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
+  }
 
   comprar() {
     if (_form.currentState!.validate()) {
@@ -34,6 +42,7 @@ class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
 
   @override
   Widget build(BuildContext context) {
+    readNumberFormat();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.moeda.nome),
