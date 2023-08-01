@@ -1,8 +1,6 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-
 import '../adapter/moeda_hive_adapter.dart';
 import '../models/moeda.dart';
 
@@ -21,7 +19,7 @@ class FavoritasRepository extends ChangeNotifier {
 
   _openBox() async {
     Hive.registerAdapter(MoedaHiveAdapter());
-    box = await Hive.lazyBox<Moeda>('moedas_favoritas');
+    box = await Hive.openLazyBox<Moeda>('moedas_favoritas');
   }
 
   _readFavoritas() {
