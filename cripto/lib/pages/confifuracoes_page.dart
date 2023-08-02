@@ -1,6 +1,7 @@
 import 'package:cripto/configs/app_settings.dart';
 import 'package:cripto/repositories/conta_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +38,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                 style: TextStyle(fontSize: 25, color: Colors.indigo),
               ),
               trailing:
-                  IconButton(onPressed: updateSaldo, icon: Icon(Icons.edit)),
+                  IconButton(onPressed: udpateSaldo, icon: Icon(Icons.edit)),
             ),
             Divider(),
           ],
@@ -46,13 +47,46 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
     );
   }
 
-  uptadeSaldo() async {
+  udpateSaldo() async {
+    print('entrou');
     final form = GlobalKey<FormState>();
     final valor = TextEditingController();
-    final conta = context.watch<ContaRepository>();
+    final conta = context.read<ContaRepository>();
 
     valor.text = conta.saldo.toString();
 
-    AlertDialog dialog = AlertDialog();
+    AlertDialog dialog = AlertDialog(
+      title: Text('Atualizar o Saldo'),
+      content: Form(
+        key: form,
+        child: TextFormField(
+          controller: valor,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*'))
+          ],
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Informe o valor do Saldo';
+            }
+            return null;
+          },
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.pop(context), child: Text('CANCELAR')),
+        TextButton(
+            onPressed: () {
+              if (form.currentState!.validate()) {
+                conta.setSaldo(double.parse(valor.text));
+                Navigator.pop(context);
+              }
+            },
+            child: Text('SALVAR')),
+      ],
+    );
+
+    showDialog(context: context, builder: (context) => dialog);
   }
 }
