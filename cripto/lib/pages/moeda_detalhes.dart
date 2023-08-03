@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../configs/app_settings.dart';
 import '../models/moeda.dart';
+import '../repositories/conta_repository.dart';
 
 class MoedaDetalhes extends StatefulWidget {
   Moeda moeda;
@@ -22,16 +22,17 @@ class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
   final _form = GlobalKey<FormState>();
   final _valor = TextEditingController();
   double quantidade = 0;
+  late ContaRepository conta;
 
   readNumberFormat() {
     loc = context.watch<AppSettings>().locale;
     real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
   }
 
-  comprar() {
+  comprar() async {
     if (_form.currentState!.validate()) {
       // Salvar a compra
-
+      await conta.comprar(widget.moeda, double.parse(_valor.text));
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -42,6 +43,8 @@ class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
 
   @override
   Widget build(BuildContext context) {
+    //conta = context.watch<ContaRepository>();
+    conta = Provider.of<ContaRepository>(context, listen: false);
     readNumberFormat();
     return Scaffold(
       appBar: AppBar(
@@ -117,6 +120,8 @@ class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
                     return 'Informe o valor da compra';
                   } else if (double.parse(value) < 50) {
                     return 'Compra mínima é R\$ 50,00';
+                  } else if (double.parse(value) < conta.saldo) {
+                    return 'Saldo insuficiente';
                   }
                   return null;
                 },
