@@ -38,6 +38,8 @@ dependencies:
   path_provider:
   sqflite:
   fl_chart:
+  firebase_core:
+  firebase_database:
 
 
   # The following adds the Cupertino Icons font to your application.

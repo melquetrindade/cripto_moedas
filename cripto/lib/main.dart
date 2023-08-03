@@ -5,10 +5,13 @@ import 'package:cripto/repositories/favorita_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'configs/hive_config.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveConfig.start();
+  await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => ContaRepository()),

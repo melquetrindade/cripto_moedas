@@ -48,7 +48,6 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   }
 
   udpateSaldo() async {
-    print('entrou');
     final form = GlobalKey<FormState>();
     final valor = TextEditingController();
     final conta = context.read<ContaRepository>();

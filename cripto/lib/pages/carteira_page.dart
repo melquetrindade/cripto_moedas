@@ -1,4 +1,5 @@
 import 'package:cripto/configs/app_settings.dart';
+import 'package:cripto/models/historico.dart';
 import 'package:cripto/models/posicao.dart';
 import 'package:cripto/repositories/conta_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -57,6 +58,7 @@ class _CarteiraPageState extends State<CarteiraPage> {
                   letterSpacing: -1.5),
             ),
             loadGrafico(),
+            loadHistorico()
           ],
         ),
       ),
@@ -73,52 +75,49 @@ class _CarteiraPageState extends State<CarteiraPage> {
     });
   }
 
-  setGraficoDados(int index){
-    if(index < 0){
+  setGraficoDados(int index) {
+    if (index < 0) {
       return null;
     }
-    if(index == carteira.length){
+    if (index == carteira.length) {
       graficoLabel = 'Saldo';
       graficoValor = conta.saldo;
-    }
-    else {
+    } else {
       graficoLabel = carteira[index].moeda.nome;
       graficoValor = carteira[index].moeda.preco * carteira[index].quantidade;
     }
   }
 
-  loadCarteira(){
+  loadCarteira() {
     setGraficoDados(index);
     carteira = conta.carteira;
     final tamanhoList = carteira.length + 1;
 
     return List.generate(tamanhoList, (i) {
       final isTouched = i == index;
-      final isSaldo = i == tamanhoList -1;
+      final isSaldo = i == tamanhoList - 1;
       final fontSize = isTouched ? 18.0 : 14.0;
       final radius = isTouched ? 60.0 : 50.0;
       final color = isTouched ? Colors.tealAccent : Colors.tealAccent[400];
 
       double porcentagem = 0;
-      if(!isSaldo){
-        porcentagem = carteira[i].moeda.preco * carteira[i].quantidade / totalCarteira;
-      }
-      else{
+      if (!isSaldo) {
+        porcentagem =
+            carteira[i].moeda.preco * carteira[i].quantidade / totalCarteira;
+      } else {
         porcentagem = (conta.saldo > 0) ? conta.saldo / totalCarteira : 0;
       }
       porcentagem *= 100;
 
       return PieChartSectionData(
-        color: color,
-        value: porcentagem,
-        title: '${porcentagem.toStringAsFixed(0)}%',
-        radius: radius,
-        titleStyle: TextStyle(
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: Colors.black87
-        )
-      );
+          color: color,
+          value: porcentagem,
+          title: '${porcentagem.toStringAsFixed(0)}%',
+          radius: radius,
+          titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87));
     });
   }
 
@@ -144,11 +143,14 @@ class _CarteiraPageState extends State<CarteiraPage> {
                     pieTouchData: PieTouchData(
                       touchCallback: (FlTouchEvent event, pieTouchResponse) {
                         setState(() {
-                          if (event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                          if (event.isInterestedForInteractions ||
+                              pieTouchResponse == null ||
+                              pieTouchResponse.touchedSection == null) {
                             index = -1;
                             return;
                           }
-                          index = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                          index = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
                           setGraficoDados(index);
                         });
                       },
@@ -170,5 +172,23 @@ class _CarteiraPageState extends State<CarteiraPage> {
               )
             ],
           );
+  }
+
+  loadHistorico() {
+    final historico = conta.historico;
+    final date = DateFormat('dd/MM/yyyy - hh:mm');
+    List<Widget> widgets = [];
+
+    for (var operacao in historico) {
+      widgets.add(ListTile(
+        title: Text(operacao.moeda.nome),
+        subtitle: Text(date.format(operacao.dataOperacao)),
+        trailing: Text(real.format(operacao.moeda.preco * operacao.quantidade)),
+      ));
+      widgets.add(Divider());
+    }
+    return Column(
+      children: widgets,
+    );
   }
 }
