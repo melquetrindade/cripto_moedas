@@ -1,5 +1,6 @@
 import 'package:cripto/configs/app_settings.dart';
 import 'package:cripto/repositories/conta_repository.dart';
+import 'package:cripto/repositories/language_repository.dart';
 import 'package:cripto/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +20,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   @override
   Widget build(BuildContext context) {
     final conta = context.watch<ContaRepository>();
-    final loc = context.read<AppSettings>().locale;
+    final loc = context.read<LanguageRepository>().locale;
     NumberFormat real =
         NumberFormat.currency(locale: loc['locale'], name: loc['name']);
     return Scaffold(

@@ -2,6 +2,7 @@ import 'package:cripto/configs/app_settings.dart';
 import 'package:cripto/models/historico.dart';
 import 'package:cripto/models/posicao.dart';
 import 'package:cripto/repositories/conta_repository.dart';
+import 'package:cripto/repositories/language_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -31,7 +32,7 @@ class _CarteiraPageState extends State<CarteiraPage> {
   @override
   Widget build(BuildContext context) {
     conta = context.watch<ContaRepository>();
-    final loc = context.read<AppSettings>().locale;
+    final loc = context.read<LanguageRepository>().locale;
     real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
     saldo = conta.saldo;
 

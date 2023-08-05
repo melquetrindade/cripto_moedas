@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../configs/app_settings.dart';
 import '../models/moeda.dart';
 import '../repositories/conta_repository.dart';
+import '../repositories/language_repository.dart';
 
 class MoedaDetalhes extends StatefulWidget {
   Moeda moeda;
@@ -18,16 +19,10 @@ class MoedaDetalhes extends StatefulWidget {
 
 class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
   late NumberFormat real;
-  late Map<String, String> loc;
   final _form = GlobalKey<FormState>();
   final _valor = TextEditingController();
   double quantidade = 0;
   late ContaRepository conta;
-
-  readNumberFormat() {
-    loc = context.watch<AppSettings>().locale;
-    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
-  }
 
   comprar() async {
     if (_form.currentState!.validate()) {
@@ -45,7 +40,9 @@ class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
   Widget build(BuildContext context) {
     //conta = context.watch<ContaRepository>();
     conta = Provider.of<ContaRepository>(context, listen: false);
-    readNumberFormat();
+    final loc = context.read<LanguageRepository>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
+    print(loc);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.moeda.nome),

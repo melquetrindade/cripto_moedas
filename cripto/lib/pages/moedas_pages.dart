@@ -1,4 +1,5 @@
 import 'package:cripto/configs/app_settings.dart';
+import 'package:cripto/repositories/language_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,8 @@ class _MoedasPageState extends State<MoedasPage> {
   late FavoritasRepository favoritas;
 
   readNumberFormat() {
-    loc = context.watch<AppSettings>().locale;
+    //loc = context.watch<AppSettings>().locale;
+    loc = context.watch<LanguageRepository>().locale;
     real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
   }
 
@@ -39,7 +41,8 @@ class _MoedasPageState extends State<MoedasPage> {
                 leading: Icon(Icons.swap_vert),
                 title: Text('Usar $locale'),
                 onTap: () {
-                  context.read<AppSettings>().setLocale(locale, name);
+                  //context.read<AppSettings>().setLocale(locale, name);
+                  context.read<LanguageRepository>().setLocale(locale, name);
                   Navigator.pop(context);
                 },
               )),
@@ -124,7 +127,8 @@ class _MoedasPageState extends State<MoedasPage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (favoritas.lista.any((fav) => fav.sigla == tabela[moeda].sigla))
+                  if (favoritas.lista
+                      .any((fav) => fav.sigla == tabela[moeda].sigla))
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Icon(Icons.star, color: Colors.amber, size: 8),

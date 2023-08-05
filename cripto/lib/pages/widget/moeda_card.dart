@@ -1,4 +1,4 @@
-
+import 'package:cripto/repositories/language_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class MoedaCard extends StatefulWidget {
 }
 
 class _MoedaCardState extends State<MoedaCard> {
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  late NumberFormat real;
 
   static Map<String, Color> precoColor = <String, Color>{
     'up': Colors.teal,
@@ -35,6 +35,8 @@ class _MoedaCardState extends State<MoedaCard> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = context.read<LanguageRepository>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
     return Card(
       margin: EdgeInsets.only(top: 12),
       elevation: 2,
