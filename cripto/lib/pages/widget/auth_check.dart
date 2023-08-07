@@ -1,4 +1,5 @@
 import 'package:cripto/pages/home_page.dart';
+import 'package:cripto/repositories/conta_repository.dart';
 import 'package:cripto/repositories/favorita_repository.dart';
 import 'package:cripto/repositories/language_repository.dart';
 import 'package:cripto/services/auth_services.dart';
@@ -22,6 +23,7 @@ class _AuthCheckState extends State<AuthCheck> {
     AuthServices auth = context.watch<AuthServices>();
     context.read<FavoritasRepository>().readFavoritas();
     context.read<LanguageRepository>().readLocale();
+    context.read<ContaRepository>().initRepository();
 
     if (auth.isLoading) {
       return loading();

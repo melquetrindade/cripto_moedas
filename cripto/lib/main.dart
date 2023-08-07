@@ -18,7 +18,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => AuthServices()),
-      ChangeNotifierProvider(create: (context) => ContaRepository()),
+      ChangeNotifierProvider(create: (context) => ContaRepository(auth: context.read<AuthServices>())),
       //ChangeNotifierProvider(create: (context) => AppSettings()),
       ChangeNotifierProvider(create: (context) => LanguageRepository(auth: context.read<AuthServices>())),
       ChangeNotifierProvider(create: (context) => FavoritasRepository(

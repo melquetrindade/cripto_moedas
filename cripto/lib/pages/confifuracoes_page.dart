@@ -24,6 +24,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
     final conta = context.watch<ContaRepository>();
     final loc = context.read<LanguageRepository>().locale;
     final test = context.read<FavoritasRepository>();
+
     NumberFormat real =
         NumberFormat.currency(locale: loc['locale'], name: loc['name']);
     return Scaffold(
@@ -51,6 +52,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
               child: OutlinedButton(
                   onPressed: () {
                     test.setLista();
+                    conta.limpaConta();
                     context.read<AuthServices>().logout();
                   },
                   style: OutlinedButton.styleFrom(primary: Colors.red),
