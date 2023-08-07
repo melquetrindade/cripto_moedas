@@ -4,6 +4,7 @@ import 'package:cripto/repositories/moeda_repository.dart';
 import 'package:cripto/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import '../adapter/moeda_hive_adapter.dart';
 import '../database/db_firestore.dart';
 import '../models/moeda.dart';
@@ -19,14 +20,18 @@ class FavoritasRepository extends ChangeNotifier {
 
   _startRepository() async {
     await _startFirestore();
-    await _readFavoritas();
+    await readFavoritas();
   }
 
   _startFirestore() {
     db = DBFirestore.get();
   }
 
-  _readFavoritas() async {
+  setLista() {
+    _lista = [];
+  }
+
+  readFavoritas() async {
     if (auth.usuario != null && _lista.isEmpty) {
       final snapshot =
           await db.collection('usuarios/${auth.usuario!.uid}/favoritas').get();

@@ -1,6 +1,8 @@
+import 'package:cripto/repositories/favorita_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import '../main.dart';
 
 class AuthException implements Exception {
   String message;
@@ -26,7 +28,7 @@ class AuthServices extends ChangeNotifier {
   }
 
   _getUser() {
-    usuario = _auth.currentUser;
+    usuario = _auth.currentUser;;
     notifyListeners();
   }
 

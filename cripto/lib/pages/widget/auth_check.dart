@@ -1,4 +1,6 @@
 import 'package:cripto/pages/home_page.dart';
+import 'package:cripto/repositories/favorita_repository.dart';
+import 'package:cripto/repositories/language_repository.dart';
 import 'package:cripto/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -16,7 +18,10 @@ class AuthCheck extends StatefulWidget {
 class _AuthCheckState extends State<AuthCheck> {
   @override
   Widget build(BuildContext context) {
-    AuthServices auth = Provider.of<AuthServices>(context);
+    //AuthServices auth = Provider.of<AuthServices>(context);
+    AuthServices auth = context.watch<AuthServices>();
+    context.read<FavoritasRepository>().readFavoritas();
+    context.read<LanguageRepository>().readLocale();
 
     if (auth.isLoading) {
       return loading();
@@ -34,5 +39,4 @@ class _AuthCheckState extends State<AuthCheck> {
       ),
     );
   }
-
 }

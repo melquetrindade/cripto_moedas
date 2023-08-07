@@ -15,14 +15,14 @@ class LanguageRepository extends ChangeNotifier {
 
   _startRepository() async {
     await _startFirestore();
-    await _readLocale();
+    await readLocale();
   }
 
   _startFirestore() {
     db = DBFirestore.get();
   }
 
-  _readLocale() async {
+  readLocale() async {
 
     final language = await db
         .collection('usuarios/${auth.usuario!.uid}/preferencia')
@@ -51,6 +51,6 @@ class LanguageRepository extends ChangeNotifier {
         .collection('usuarios/${auth.usuario!.uid}/preferencia')
         .doc('language')
         .update({'local': local, 'name': name});
-    await _readLocale();
+    await readLocale();
   }
 }

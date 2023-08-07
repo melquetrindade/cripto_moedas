@@ -1,5 +1,7 @@
 import 'package:cripto/configs/app_settings.dart';
+import 'package:cripto/main.dart';
 import 'package:cripto/repositories/conta_repository.dart';
+import 'package:cripto/repositories/favorita_repository.dart';
 import 'package:cripto/repositories/language_repository.dart';
 import 'package:cripto/services/auth_services.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   Widget build(BuildContext context) {
     final conta = context.watch<ContaRepository>();
     final loc = context.read<LanguageRepository>().locale;
+    final test = context.read<FavoritasRepository>();
     NumberFormat real =
         NumberFormat.currency(locale: loc['locale'], name: loc['name']);
     return Scaffold(
@@ -46,20 +49,23 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 24),
               child: OutlinedButton(
-                onPressed: () => context.read<AuthServices>().logout(),
-                style: OutlinedButton.styleFrom(
-                  primary: Colors.red
-                ), 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text('Sair do App', style: TextStyle(fontSize: 18),),
-                    )
-                  ],
-                )
-              ),  
+                  onPressed: () {
+                    test.setLista();
+                    context.read<AuthServices>().logout();
+                  },
+                  style: OutlinedButton.styleFrom(primary: Colors.red),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          'Sair do App',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      )
+                    ],
+                  )),
             )
           ],
         ),
