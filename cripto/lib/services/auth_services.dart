@@ -14,6 +14,7 @@ class AuthServices extends ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
   User? usuario;
   bool isLoading = true;
+  bool isConfLogout = false;
 
   AuthServices() {
     _authCheck();
@@ -28,7 +29,7 @@ class AuthServices extends ChangeNotifier {
   }
 
   _getUser() {
-    usuario = _auth.currentUser;;
+    usuario = _auth.currentUser;
     notifyListeners();
   }
 
@@ -60,6 +61,7 @@ class AuthServices extends ChangeNotifier {
 
   logout() async {
     await _auth.signOut();
+    isConfLogout = true;
     _getUser();
   }
 }

@@ -21,9 +21,17 @@ class _AuthCheckState extends State<AuthCheck> {
   Widget build(BuildContext context) {
     //AuthServices auth = Provider.of<AuthServices>(context);
     AuthServices auth = context.watch<AuthServices>();
-    context.read<FavoritasRepository>().readFavoritas();
-    context.read<LanguageRepository>().readLocale();
-    context.read<ContaRepository>().initRepository();
+
+    //context.read<FavoritasRepository>().setLista();
+    //context.read<LanguageRepository>().readLocale();
+    //context.read<ContaRepository>().limpaConta();
+
+    if (auth.usuario != null && auth.isConfLogout == true) {
+      context.read<FavoritasRepository>().readFavoritas();
+      context.read<LanguageRepository>().readLocale();
+      context.read<ContaRepository>().initRepository();
+      auth.isConfLogout = false;
+    }
 
     if (auth.isLoading) {
       return loading();

@@ -23,11 +23,18 @@ class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
   final _valor = TextEditingController();
   double quantidade = 0;
   late ContaRepository conta;
+  bool isLoading = false;
 
   comprar() async {
     if (_form.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
       // Salvar a compra
       await conta.comprar(widget.moeda, double.parse(_valor.text));
+      setState(() {
+        isLoading = false;
+      });
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -138,7 +145,19 @@ class _MoedasDetalhesPageState extends State<MoedaDetalhes> {
                 onPressed: comprar,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: (isLoading)
+                  ? [
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(color: Colors.white,),
+                      ),
+                    )
+                  ]
+                  :
+                  [
                     Icon(Icons.check),
                     Padding(
                       padding: EdgeInsets.all(16),
