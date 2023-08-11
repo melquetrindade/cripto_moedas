@@ -2,9 +2,8 @@ import 'package:cripto/repositories/language_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import '../../models/moeda.dart';
 import '../../repositories/favorita_repository.dart';
+import '../../repositories/moeda_repository2.dart';
 import '../moeda_detalhes.dart';
 
 class MoedaCard extends StatefulWidget {
@@ -46,7 +45,7 @@ class _MoedaCardState extends State<MoedaCard> {
           padding: EdgeInsets.only(top: 20, bottom: 20, left: 20),
           child: Row(
             children: [
-              Image.asset(
+              Image.network(
                 widget.moeda.icone,
                 height: 40,
               ),

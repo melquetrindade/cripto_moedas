@@ -1,4 +1,4 @@
-import 'moeda.dart';
+import '../repositories/moeda_repository2.dart';
 
 class Posicao {
   Moeda moeda;

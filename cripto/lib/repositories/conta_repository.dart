@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cripto/repositories/moeda_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import '../database/db.dart';
+//import 'package:sqflite/sqflite.dart';
+//import '../database/db.dart';
 import '../database/db_firestore.dart';
 import '../models/historico.dart';
-import '../models/moeda.dart';
+//import '../models/moeda.dart';
 import '../models/posicao.dart';
 import '../services/auth_services.dart';
+import 'moeda_repository2.dart';
 
 class ContaRepository extends ChangeNotifier {
   //late Database db;
@@ -16,12 +16,13 @@ class ContaRepository extends ChangeNotifier {
   List<Posicao> _carteira = [];
   List<Historico> _historico = [];
   double _saldo = 0;
+  MoedaRepository moedas;
 
   get saldo => _saldo;
   List<Posicao> get carteira => _carteira;
   List<Historico> get historico => _historico;
 
-  ContaRepository({required this.auth}) {
+  ContaRepository({required this.auth, required this.moedas}) {
     initRepository2();
   }
 
@@ -64,13 +65,13 @@ class ContaRepository extends ChangeNotifier {
   }
 
   setSaldo(double valor) async {
+
     //db = await DB.instance.database;
     //db.update('conta', {
     //  'saldo': valor,
     //});
     //_saldo = valor;
     //notifyListeners();
-    print('entrou no setSaldo');
 
     final hasSaldo = await db
         .collection('usuarios/${auth.usuario!.uid}/contaDoc')
@@ -93,6 +94,7 @@ class ContaRepository extends ChangeNotifier {
   }
 
   comprar(Moeda moeda, double valor) async {
+
     //db = await DB.instance.database;
     //await db.transaction((txn) async {
     //  // verificar se a moeda já foi comprada
@@ -117,6 +119,7 @@ class ContaRepository extends ChangeNotifier {
     //        where: 'saldo = ?',
     //        whereArgs: [moeda.sigla]);
     //  }
+
     // verificar se a moeda já foi comprada
     final posicao = await db
         .collection('usuarios/${auth.usuario!.uid}/carteira')
@@ -185,6 +188,7 @@ class ContaRepository extends ChangeNotifier {
   }
 
   _getCarteira() async {
+
     //_carteira = [];
     //List posicoes = await db.query('carteira');
     //posicoes.forEach((posicao) {
@@ -200,13 +204,15 @@ class ContaRepository extends ChangeNotifier {
         await db.collection('usuarios/${auth.usuario!.uid}/carteira').get();
     posicoes.docs.forEach((doc) {
       Moeda moeda =
-          MoedaRepository.tabela.firstWhere((m) => m.sigla == doc.get('sigla'));
-      _carteira.add(Posicao(moeda: moeda, quantidade: double.parse(doc.get('quantidade'))));
+          moedas.tabela2.firstWhere((m) => m.sigla == doc.get('sigla'));
+      _carteira.add(Posicao(
+          moeda: moeda, quantidade: double.parse(doc.get('quantidade'))));
     });
     notifyListeners();
   }
 
   _getHistorico() async {
+    
     //_historico = [];
     //List operacoes = await db.query('historico');
     //operacoes.forEach((operacao) {
@@ -228,7 +234,7 @@ class ContaRepository extends ChangeNotifier {
 
     operacoes.docs.forEach((doc) {
       Moeda moeda =
-          MoedaRepository.tabela.firstWhere((m) => m.sigla == doc.get('sigla'));
+          moedas.tabela2.firstWhere((m) => m.sigla == doc.get('sigla'));
       _historico.add(Historico(
           dataOperacao:
               DateTime.fromMillisecondsSinceEpoch(doc.get('data_operacao')),

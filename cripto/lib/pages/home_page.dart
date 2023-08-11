@@ -1,11 +1,11 @@
-
 import 'package:cripto/pages/confifuracoes_page.dart';
+import 'package:cripto/repositories/favorita_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'carteira_page.dart';
 import 'favoritas_page.dart';
 import 'moedas_pages.dart';
-
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final check = context.watch<FavoritasRepository>();
     return Scaffold(
       body: PageView(
         controller: pc,
@@ -49,8 +50,10 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
           BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritas'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet), label: 'Carteira'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Configurações'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet), label: 'Carteira'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Configurações'),
         ],
         onTap: (pagina) {
           pc.animateToPage(
@@ -58,8 +61,12 @@ class _HomePageState extends State<HomePage> {
             duration: Duration(milliseconds: 400),
             curve: Curves.ease,
           );
+          if (pagina == 1) {
+            if (check.isCheck == true) {
+              check.refreshFavoritas();
+            }
+          }
         },
-        // backgroundColor: Colors.grey[100],
       ),
     );
   }

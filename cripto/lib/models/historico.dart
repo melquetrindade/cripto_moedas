@@ -1,4 +1,4 @@
-import 'moeda.dart';
+import '../repositories/moeda_repository2.dart';
 
 class Historico {
   DateTime dataOperacao;

@@ -1,13 +1,9 @@
-import 'package:cripto/configs/app_settings.dart';
-import 'package:cripto/main.dart';
 import 'package:cripto/repositories/conta_repository.dart';
 import 'package:cripto/repositories/favorita_repository.dart';
 import 'package:cripto/repositories/language_repository.dart';
 import 'package:cripto/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
