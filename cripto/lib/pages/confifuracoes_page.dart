@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'documentos_page.dart';
+
 class ConfiguracoesPage extends StatefulWidget {
   const ConfiguracoesPage({super.key});
 
@@ -43,27 +45,38 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                   IconButton(onPressed: udpateSaldo, icon: Icon(Icons.edit)),
             ),
             Divider(),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: OutlinedButton(
-                  onPressed: () {
-                    test.setLista();
-                    conta.limpaConta();
-                    context.read<AuthServices>().logout();
-                  },
-                  style: OutlinedButton.styleFrom(primary: Colors.red),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Text(
-                          'Sair do App',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      )
-                    ],
-                  )),
+            ListTile(
+              leading: Icon(Icons.camera_alt),
+              title: Text('Escanear CNH ou RG'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DocumentosPage(), fullscreenDialog: true)),
+            ),
+            Divider(),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        test.setLista();
+                        conta.limpaConta();
+                        context.read<AuthServices>().logout();
+                      },
+                      style: OutlinedButton.styleFrom(primary: Colors.red),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Text(
+                              'Sair do App',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          )
+                        ],
+                      )),
+                ),
+              ),
             )
           ],
         ),
