@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:cripto/repositories/conta_repository.dart';
 import 'package:cripto/repositories/favorita_repository.dart';
 import 'package:cripto/repositories/language_repository.dart';
@@ -6,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:image_picker/image_picker.dart';
 import 'documentos_page.dart';
 
 class ConfiguracoesPage extends StatefulWidget {
@@ -17,6 +20,8 @@ class ConfiguracoesPage extends StatefulWidget {
 }
 
 class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
+  XFile? comprovante;
+
   @override
   Widget build(BuildContext context) {
     final conta = context.watch<ContaRepository>();
@@ -48,7 +53,20 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             ListTile(
               leading: Icon(Icons.camera_alt),
               title: Text('Escanear CNH ou RG'),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DocumentosPage(), fullscreenDialog: true)),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DocumentosPage(),
+                      fullscreenDialog: true)),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.attach_file),
+              title: Text('Enviar Comprovante'),
+              onTap: selecionarComprovante,
+              trailing: comprovante != null
+                  ? Image.file(File(comprovante!.path))
+                  : null,
             ),
             Divider(),
             Expanded(
@@ -82,6 +100,21 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
         ),
       ),
     );
+  }
+
+  selecionarComprovante() async {
+    print('entrou');
+    final ImagePicker picker = ImagePicker();
+
+    try {
+      XFile? file = await picker.pickImage(source: ImageSource.gallery);
+
+      if (file != null) {
+        setState(() => {comprovante = file});
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   udpateSaldo() async {
