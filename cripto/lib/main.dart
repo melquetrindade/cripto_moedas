@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveConfig.start();
   await Firebase.initializeApp();
-  
+   
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => AuthServices()),
